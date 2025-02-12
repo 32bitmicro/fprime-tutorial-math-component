@@ -858,8 +858,8 @@ Replace the original cpp and hpp files with the ones you just created:
 
 ```shell 
 # In: MathReceiver
-mv MathReceiver.cpp-template MathReceiver.cpp
-mv MathReceiver.hpp-template MathReceiver.hpp
+mv MathReceiver.template.cpp MathReceiver.cpp
+mv MathReceiver.template.hpp MathReceiver.hpp
 ```
 
 Test the build:
@@ -964,7 +964,7 @@ void MathReceiver ::
       NATIVE_UINT_TYPE context
   )
 {
-    U32 numMsgs = this->m_queue.getNumMsgs();
+    U32 numMsgs = this->m_queue.getMessagesAvailable();
     for (U32 i = 0; i < numMsgs; ++i) {
         (void) this->doDispatch();
     }
@@ -1551,7 +1551,18 @@ To incorporate random numbers into the existing tests you have written for `Math
 ```
 
 
-**Second,** modify `MathSenderTestMain.cpp` to include `Random.hpp`:
+**Second,** edit `MathSender/test/ut/MathSenderTester.cpp` to pick random values:
+
+```cpp
+// In: MathSenderTester.cpp
+// Within: void MathSenderTester::testDoMath(MathOp op)
+// Pick values
+const F32 val1 = STest::Pick::any();
+const F32 val2 = STest::Pick::any() + STest::Pick::inUnitInterval();
+```
+
+
+**Third,** modify `MathSenderTestMain.cpp` to include `Random.hpp`:
 
 ```cpp
 // In: MathSenderTestMain.cpp
@@ -1560,7 +1571,7 @@ To incorporate random numbers into the existing tests you have written for `Math
 ```
 
 
-**Third,** add the following line to the main function of `MathSenderTestMain.cpp`, just *before* the return statement:
+**Fourth,** add the following line to the main function of `MathSenderTestMain.cpp`, just *before* the return statement:
 
 ```cpp
 // In: MathSenderTestMain.cpp
@@ -1568,14 +1579,14 @@ To incorporate random numbers into the existing tests you have written for `Math
 STest::Random::seed();
 ```
 
-**Fourth,** modify `MathSender/CMakeLists.txt` to include STest as a build dependency:
+**Fifth,** modify `MathSender/CMakeLists.txt` to include STest as a build dependency:
 
 ```cmake 
 # In: /MathSender/CMakeLists.txt
 # Above: register_fprime_ut()
 set(UT_MOD_DEPS STest)
 ```
-**Fifth,** recompile and rerun the tests.
+**Sixth,** recompile and rerun the tests.
 
 ```shell
 # In: MathSender  
@@ -1882,7 +1893,7 @@ void MathReceiverTester ::
     // verify telemetry
 
     // check that one channel was written
-    ASSERT_TLM_SIZE(2);
+    ASSERT_TLM_SIZE(1);
     // check that it was the op channel
     ASSERT_TLM_OPERATION_SIZE(1);
     // check for the correct value of the channel
