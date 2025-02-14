@@ -22,11 +22,11 @@ namespace MathModule {
 
     public:
       // Maximum size of histories storing events, telemetry, and port outputs
-      static const NATIVE_INT_TYPE MAX_HISTORY_SIZE = 10;
+      static const U32 MAX_HISTORY_SIZE = 10;
       // Instance ID supplied to the component instance under test
-      static const NATIVE_INT_TYPE TEST_INSTANCE_ID = 0;
+      static const FwEnumStoreType TEST_INSTANCE_ID = 0;
       // Queue depth supplied to component instance under test
-      static const NATIVE_INT_TYPE TEST_INSTANCE_QUEUE_DEPTH = 10;
+      static const FwSizeType TEST_INSTANCE_QUEUE_DEPTH = 10;
 
       //! Construct object MathReceiverTester
       //!
@@ -90,7 +90,7 @@ namespace MathModule {
       //! Handler for from_mathResultOut
       //!
       void from_mathResultOut_handler(
-          const NATIVE_INT_TYPE portNum, /*!< The port number*/
+          const FwIndexType portNum, /*!< The port number*/
           F32 result /*!< 
       the result of the operation
       */
